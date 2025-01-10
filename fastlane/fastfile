@@ -14,7 +14,6 @@ before_all do
     end
   
     lane :beta do
-      staging_build 
       build_app(scheme: "SimpleIOSApp", workspace: "SimpleIOSApp.xcworkspace", include_bitcode: true) # Build the app
       upload_to_testflight # Upload the build to TestFlight
       # Add actions to distribute the build, like uploading to TestFlight
