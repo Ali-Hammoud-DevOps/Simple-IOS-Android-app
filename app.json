@@ -1,4 +1,9 @@
 {
   "name": "SimpleIOSApp",
-  "displayName": "SimpleIOSApp"
+  "displayName": "SimpleIOSApp",
+  "extra": {
+    "eas": {
+      "projectId": "00842ae9-ce45-45dd-b295-64182654627d"
+    }
+  }
 }
