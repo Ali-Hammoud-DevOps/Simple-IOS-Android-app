@@ -1,0 +1,36 @@
+before_all do
+    # This block is called before each lane is executed
+    # You can use it for tasks like clearing the keychain or setting environment variables
+    ensure_git_branch(branch: 'main') # Ensure we are on the correct branch
+    ensure_git_status_clean # Ensure the repo is in a clean state
+    git_pull # Ensure the latest code is pulled
+  end
+  
+  # iOS-specific lanes
+  platform :ios do
+    desc "PRIVATE LANE for staging"
+    private_lane :staging_build do |options|
+      # Add iOS-specific build actions here
+    end
+  
+    lane :beta do
+      staging_build 
+      build_app(scheme: "SimpleIOSApp", workspace: "SimpleIOSApp.xcworkspace", include_bitcode: true) # Build the app
+      upload_to_testflight # Upload the build to TestFlight
+      # Add actions to distribute the build, like uploading to TestFlight
+    end
+  end
+  
+  # Android-specific lanes
+  platform :android do
+    lane :build do
+      increment_version_code # Use version code increment for Android
+      gradle(task: 'assembleRelease') # Adjust the task as per your Gradle setup
+    end
+  
+    lane :deploy do
+      build
+      upload_to_play_store
+    end
+  end
+  
